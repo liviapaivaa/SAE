@@ -260,8 +260,8 @@ const classTone = (value: Classification) =>
       : 'bg-amber-50 text-amber-700 ring-amber-200'
 
 function Login({ data, onLogin }: { data: AppData; onLogin: (user: Assistant) => void }) {
-  const [username, setUsername] = useState('admin')
-  const [password, setPassword] = useState('admin123')
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
 
@@ -340,12 +340,7 @@ function Login({ data, onLogin }: { data: AppData; onLogin: (user: Assistant) =>
                 {busy ? 'Verificando…' : 'Entrar no sistema'} <Icon name="chevron" size={17} />
               </button>
             </form>
-            <div className="mt-8 rounded-2xl border border-blue-100 bg-blue-50/60 p-4 text-sm text-slate-600">
-              <p className="font-semibold text-[#0b2b52]">Acesso inicial</p>
-              <p className="mt-1">
-                Usuário: <strong>admin</strong> · Senha: <strong>admin123</strong>
-              </p>
-            </div>
+            
           </div>
         </section>
       </div>

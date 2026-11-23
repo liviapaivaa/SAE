@@ -1,4 +1,3 @@
-
 import { createClientBrowser } from '@/lib/supabase-browser'
 import type { AppData } from '@/models/school'
 
@@ -17,9 +16,7 @@ export async function loadSupabaseData(): Promise<AppData> {
 
   const results = await Promise.all(
     tables.map(async (table) => {
-      const { data, error } = await supabase
-        .from(table)
-        .select('*')
+      const { data, error } = await supabase.from(table).select('*')
 
       if (error) {
         throw new Error(`Erro ao carregar ${table}: ${error.message}`)
@@ -53,8 +50,8 @@ export async function loadSupabaseData(): Promise<AppData> {
     assistants: assistants.map((item: any) => ({
       id: item.id,
       name: item.name,
-      username: item.email || item.username,
-      passwordHash: '',
+      username: item.username || item.email,
+      passwordHash: item.password_hash || '',
       role: item.role,
       status: item.status,
     })),
@@ -111,6 +108,7 @@ export async function loadSupabaseData(): Promise<AppData> {
     })),
   }
 }
+
 export async function saveSupabaseData(data: AppData): Promise<void> {
   const supabase = createClientBrowser()
 
@@ -162,6 +160,7 @@ export async function saveSupabaseData(data: AppData): Promise<void> {
         id: a.id,
         name: a.name,
         username: a.username,
+        password_hash: a.passwordHash,
         role: a.role,
         status: a.status,
       })),
