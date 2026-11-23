@@ -4,14 +4,16 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev --port 3000 --hostname 0.0.0.0",
-    "build": "cross-env NODE_OPTIONS=--no-deprecation payload build",
+    "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
     "format": "oxfmt",
     "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
     "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload"
   },
+  
   "dependencies": {
     "@payloadcms/figma": "1.0.0-beta.1",
     "@payloadcms/next": "4.0.0-beta.8",

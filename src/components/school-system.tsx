@@ -12,6 +12,7 @@ import type {
   Student,
 } from '@/models/school'
 import { emptyData, hashPassword, loadData, saveData } from '@/services/local-store'
+import { loadSupabaseData, saveSupabaseData } from '@/services/supabase-store'
 
 
 type View =
@@ -380,11 +381,36 @@ export function SchoolSystem() {
   const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
-    setData(loadData())
-    setReady(true)
+    let active = true
+    loadSupabaseData()
+      .then((remoteData) => {
+        if (!active) return
+        const hasRemote =
+          remoteData.classes.length > 0 ||
+          remoteData.students.length > 0 ||
+          remoteData.assistants.length > 0 ||
+          remoteData.occurrences.length > 0
+        setData(hasRemote ? remoteData : loadData())
+        setReady(true)
+      })
+      .catch((err) => {
+        console.error('Falha ao carregar do Supabase, usando dados locais:', err)
+        if (!active) return
+        setData(loadData())
+        setReady(true)
+      })
+    return () => {
+      active = false
+    }
   }, [])
+
   useEffect(() => {
-    if (ready) saveData(data)
+    if (ready) {
+      saveData(data)
+      saveSupabaseData(data).catch((err) =>
+        console.error('Erro ao sincronizar com Supabase:', err),
+      )
+    }
   }, [data, ready])
 
   
@@ -2773,3 +2799,4 @@ function printReport(title: string, responsible: string) {
   window.print()
   document.title = previous
 }
+
